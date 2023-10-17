@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, Text, Button, Modal, StyleSheet } from 'react-native';
+import { View, Text, Button, Modal, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
 
-const IncomingCallUI = (props:any) => {
-  const { visible, call, onAccept, onReject } = props;
-
+const IncomingCallUI = (props) => {
+  const { visible, call, acceptCall, rejectCall } = props;
+  
   return (
     <Modal
       visible={visible}
       animationType="slide"
-      transparent={true}
+      transparent={false}
     >
       <View style={styles.modalContainer}>
         <View style={styles.callInfoContainer}>
@@ -16,8 +16,12 @@ const IncomingCallUI = (props:any) => {
           <Text style={styles.callStatus}>Incoming Call</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Accept" onPress={onAccept} />
-          <Button title="Reject" onPress={onReject} />
+          <TouchableOpacity onPress={acceptCall} style={{backgroundColor:"lightgreen", borderRadius:10}}>
+            <Text style={{textAlign:"center", color:"black", padding:10, fontSize:16}}>Accept</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={rejectCall} style={{backgroundColor:"red", borderRadius:10}}>
+            <Text style={{textAlign:"center", color:"black", padding:10, fontSize:16}}>Reject</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -36,17 +40,20 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
+    
   },
   callerName: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'black',
   },
   callStatus: {
     fontSize: 16,
+    color:'grey'
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    gap:10,
     marginTop: 20,
   },
 });

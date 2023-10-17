@@ -12,9 +12,8 @@ import { ABRIGHTCONNECT_CONSTANTS } from './CONSTS';
 import { CometChat } from '@cometchat/chat-sdk-react-native';
 import CometChatCalling from './CometChatCalling';
 import IncomingCallUI from './IncomingCallUI';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import Login from './Login';
-
+import VideoCallScreen from './VideoCallScreen';
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -29,21 +28,32 @@ function App() {
     }
   }
 
-  useEffect(()=>{
-    getPermissions();
-    console.log("App.js Loaded")
-  })
+    useEffect(()=>{
+      getPermissions();
+      console.log("App.js Loaded")
 
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="CometChatCalling" component={CometChatCalling} />
-        <Stack.Screen name="IncomingCallUI" component={IncomingCallUI} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+      // Initialize CometChat (you should provide your own API_KEY and APP_ID)
+      CometChat.init(ABRIGHTCONNECT_CONSTANTS.APP_ID, new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion('in').build()).then(
+        () => {
+          console.log('CometChat initialized successfully');
+        },
+        (error) => {
+          console.log('CometChat initialization failed with error:', error);
+        }
+      );
+    }, [])
+
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="CometChatCalling" component={CometChatCalling} />
+          <Stack.Screen name="VideoCallScreen" component={VideoCallScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
 
 export default App;
